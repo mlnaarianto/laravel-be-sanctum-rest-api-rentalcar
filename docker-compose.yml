@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     mem_limit: 512m
-    cpus: 0.5
+    cpus: 0.75   # ⬅️ upgrade dari 0.5
 
   web:
     image: nginx:latest
@@ -28,6 +28,9 @@ services:
   db:
     image: mysql:8.0
     container_name: laravelbe_db
+    command: >
+      --innodb-buffer-pool-size=256M
+      --max-connections=40
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravelbe
@@ -36,20 +39,7 @@ services:
     volumes:
       - laravelbe_dbdata:/var/lib/mysql
     mem_limit: 1g
-    cpus: 0.5
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: laravelbe_pma
-    ports:
-      - "8080:80"
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-    depends_on:
-      - db
-    mem_limit: 256m
-    cpus: 0.25
+    cpus: 0.75   # ⬅️ upgrade dari 0.5
 
 volumes:
   laravelbe_dbdata:

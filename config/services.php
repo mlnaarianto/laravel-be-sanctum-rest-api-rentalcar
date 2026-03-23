@@ -41,5 +41,6 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
-    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS')),
+'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', '')),
+    
 ];
