@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # Hapus args UID/GID
     container_name: laravelbe_app
     working_dir: /var/www
     volumes:
@@ -10,7 +11,7 @@ services:
     depends_on:
       - db
     mem_limit: 512m
-    cpus: 0.75   # ⬅️ upgrade dari 0.5
+    cpus: 0.75
 
   web:
     image: nginx:latest
@@ -39,7 +40,7 @@ services:
     volumes:
       - laravelbe_dbdata:/var/lib/mysql
     mem_limit: 1g
-    cpus: 0.75   # ⬅️ upgrade dari 0.5
+    cpus: 0.75
 
 volumes:
   laravelbe_dbdata:
