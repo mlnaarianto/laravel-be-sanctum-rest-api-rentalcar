@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libssl-dev \
+    libicu-dev \
     ca-certificates \
     net-tools \
     iputils-ping \
@@ -27,7 +28,8 @@ RUN docker-php-ext-install \
     pcntl \
     bcmath \
     gd \
-    curl
+    curl \
+    intl
 
 # Update SSL certificates (penting untuk Google OAuth HTTPS)
 RUN update-ca-certificates
@@ -47,7 +49,7 @@ COPY . .
 # Install dependency Laravel
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# ✅ Buat semua folder storage yang dibutuhkan Laravel
+# Buat semua folder storage yang dibutuhkan Laravel
 RUN mkdir -p /var/www/storage/framework/views \
              /var/www/storage/framework/cache \
              /var/www/storage/framework/sessions \
@@ -55,7 +57,7 @@ RUN mkdir -p /var/www/storage/framework/views \
              /var/www/storage/logs \
              /var/www/bootstrap/cache
 
-# ✅ Set permission yang benar
+# Set permission yang benar
 RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache \
@@ -63,7 +65,7 @@ RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
 
-# ✅ Clear semua cache saat build
+# Clear semua cache saat build
 RUN php artisan config:clear || true \
     && php artisan view:clear || true \
     && php artisan cache:clear || true
@@ -71,5 +73,5 @@ RUN php artisan config:clear || true \
 # Expose PHP-FPM
 EXPOSE 9000
 
-# ✅ Jalankan PHP-FPM sebagai www-data
+# Jalankan PHP-FPM sebagai www-data
 CMD ["php-fpm"]
